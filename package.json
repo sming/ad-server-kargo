@@ -1,0 +1,43 @@
+{
+  "name": "adserver",
+  "version": "1.0.0",
+  "description": "implementation of Kargo coding test",
+  "main": "index.js",
+  "author": "peterkingswell@gmail.com",
+  "license": "MIT",
+  "scripts": {
+    "start": "gulp",
+    "test": "gulp test"
+  },
+  "dependencies": {
+    "lodash": "^4.17.0",
+    "minimatch": "^3.0.3",
+    "vinyl-fs": "^2.4.4"
+  },
+  "devDependencies": {
+    "babel-preset-latest": "^6.16.0",
+    "chai": "^3.5.0",
+    "del": "^2.2.2",
+    "eslint": "^3.10.0",
+    "eslint-config-airbnb": "^13.0.0",
+    "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-jsx-a11y": "2.2.3",
+    "eslint-plugin-react": "^6.7.0",
+    "gulp": "^3.9.1",
+    "gulp-babel": "^6.1.2",
+    "gulp-eslint": "^3.0.1",
+    "gulp-mocha": "^3.0.1",
+    "mocha": "^3.1.2"
+  },
+  "babel": {
+    "presets": [
+      "latest"
+    ]
+  },
+  "eslintConfig": {
+    "extends": "airbnb",
+    "plugins": [
+      "import"
+    ]
+  }
+}
