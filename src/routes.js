@@ -1,4 +1,3 @@
-// Import node module
 import express from 'express';
 
 const router = express.Router();
@@ -14,6 +13,7 @@ router.get('/hi', (req, res) => {
  *    DELETE: deletes contact by id
  */
 router.get('/adcreative/:id', (req, res) => {
+  const id = req.params.id;   // TODO express guarantees that this is non-null. We should check it's an int.
   console.log('/adcreative hit for ID ' + id);
   const { adId, creative } = Dao.getAdCreative();
 

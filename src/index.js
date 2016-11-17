@@ -5,29 +5,10 @@
 /* eslint-disable newline-after-import */
 /* eslint-disable comma-dangle */
 /* eslint-disable key-spacing */
+/* eslint-disable no-multi-spaces */
 import express from 'express';
 import routes from './routes';
 import he from './handle-errors';
-
-var mysql      = require('mysql');
-var connection = mysql.createConnection({
-  host     : 'localhost',
-  user     : 'root',
-  password : 'kargopass',
-  database : 'kargo',
-  port     : 3306,
-});
-
-connection.connect();
-
-connection.query('SELECT * FROM ad_server', (err, rows, fields) => {
-  if (err) throw err;
-
-  console.log("Fields: " + JSON.stringify(fields));
-  console.log('The solution is: ', rows[0].name);
-});
-
-connection.end();
 
 console.log('HI');
 

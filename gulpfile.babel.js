@@ -39,7 +39,6 @@ gulp.task('watch', () => {
 
 gulp.task('default', ['watch', 'main']);
 
-
 gulp.task('lint', () =>
   gulp.src([
     paths.allSrcJs,
@@ -50,7 +49,6 @@ gulp.task('lint', () =>
     .pipe(eslint.failAfterError()),
 );
 
-xxx
 gulp.task('test', ['build'], () =>
   gulp.src(paths.allLibTests)
     .pipe(mocha()),
