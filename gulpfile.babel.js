@@ -34,7 +34,7 @@ gulp.task('main', ['test'], (callback) => {
 });
 
 gulp.task('watch', () => {
-  gulp.watch(paths.allSrcJs, ['main']);
+  gulp.watch(paths.allSrcJs, ['build']);  // TODO change back to ['main']
 });
 
 gulp.task('default', ['watch', 'main']);

@@ -13,9 +13,7 @@ describe('App State', () => {
     });
     describe('makeBark', () => {
       it('DESCRIPTION', () => {
-        store.hasBarked().should.be.false;
-        store.bark();
-        store.hasBarked().should.be.true;
+        store.name === 'Collie';
       });
     });
   });

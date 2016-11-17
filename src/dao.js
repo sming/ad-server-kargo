@@ -15,12 +15,24 @@ export default class {
     this.connection.connect();
   }
 
-  doTestQuery() {
-    this.connection.query('SELECT * FROM ad_server', (err, rows, fields) => {
-      if (err) throw err;
+  getCreative(resolve, reject, id) {
+    this.connection.query('SELECT * FROM ad where id=' + id, (err, rows) => {
+      if (err) reject(err);
+      resolve(rows);
+    });
+  }
 
-      console.log('Fields: ' + JSON.stringify(fields));
-      console.log('The solution is: ', rows[0].name);
+  getCreatives(resolve, reject) {
+    this.connection.query('SELECT * FROM ad', (err, rows) => {  // removed ,fields
+      if (err) reject(err);
+      resolve(rows);
+    });
+  }
+
+  saveCreative(resolve, reject, creative, brandId) {
+    this.connection.query('INSERT INTO ad SET ?', {creative, ad_brand_id: brandId}, (err, result) => {
+      if (err) reject(err);
+      resolve(result.insertId);
     });
   }
 
