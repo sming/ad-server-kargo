@@ -12,8 +12,8 @@ import he from './handle-errors';
 var mysql      = require('mysql');
 var connection = mysql.createConnection({
   host     : 'localhost',
-  user     : '',
-  password : '',
+  user     : 'root',
+  password : 'kargopass',
   database : 'kargo',
   port     : 3306,
 });

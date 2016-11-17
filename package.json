@@ -7,12 +7,16 @@
   "license": "MIT",
   "scripts": {
     "start": "gulp",
-    "test": "gulp test"
+    "test": "gulp test",
+    "watch": "gulp watch",
+    "build": "gulp build",
+    "clean": "gulp clean"
   },
   "dependencies": {
     "express": "^4.14.0",
     "lodash": "^4.17.0",
     "minimatch": "^3.0.3",
+    "mysql": "^2.12.0",
     "vinyl-fs": "^2.4.4"
   },
   "devDependencies": {
@@ -28,7 +32,8 @@
     "gulp-babel": "^6.1.2",
     "gulp-eslint": "^3.0.1",
     "gulp-mocha": "^3.0.1",
-    "mocha": "^3.1.2"
+    "mocha": "^3.1.2",
+    "node-inspector": "^0.12.8"
   },
   "babel": {
     "presets": [

@@ -26,7 +26,7 @@ gulp.task('build', ['lint', 'clean'], () =>
     .pipe(gulp.dest(paths.libDir)),
 );
 
-gulp.task('main', ['build'], (callback) => {
+gulp.task('main', ['test'], (callback) => {
   exec(`node ${paths.libDir}`, (error, stdout) => {
     console.log(stdout);
     return callback(error);
@@ -50,7 +50,7 @@ gulp.task('lint', () =>
     .pipe(eslint.failAfterError()),
 );
 
-// TODO reinstate this when it has tests
+xxx
 gulp.task('test', ['build'], () =>
   gulp.src(paths.allLibTests)
     .pipe(mocha()),
