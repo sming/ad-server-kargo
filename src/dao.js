@@ -1,20 +1,30 @@
-const mysql      = require('mysql');
+//const mysql      = require('mysql');
 
-const connection = mysql.createConnection({
-  host     : 'localhost',
-  user     : 'root',
-  password : 'kargopass',
-  database : 'kargo',
-  port     : 3306,
-});
+import * as mysql from 'mysql';
 
-connection.connect();
+export default class {
+  constructor() {
+    this.connection = mysql.createConnection({
+      host     : 'localhost',
+      user     : 'root',
+      password : 'kargopass',
+      database : 'kargo',
+      port     : 3306,
+    });
 
-connection.query('SELECT * FROM ad_server', (err, rows, fields) => {
-  if (err) throw err;
+    this.connection.connect();
+  }
 
-  console.log('Fields: ' + JSON.stringify(fields));
-  console.log('The solution is: ', rows[0].name);
-});
+  doTestQuery() {
+    this.connection.query('SELECT * FROM ad_server', (err, rows, fields) => {
+      if (err) throw err;
 
-connection.end();
+      console.log('Fields: ' + JSON.stringify(fields));
+      console.log('The solution is: ', rows[0].name);
+    });
+  }
+
+  disconnect() {
+    this.connection.end();
+  }
+}

@@ -21,7 +21,8 @@ app.use('/', routes);
 // Set up handling everything else
 he(app);
 
-app.listen(process.env.PORT || '3000', () => {
-  console.log('Express started on http://localhost:' +
-        app.get('port') + '; press Ctrl-C to terminate.');
+const port = process.env.PORT || '3000';
+app.listen(port, () => {
+  console.log('Express started on http://localhost:' + port
+         + '; press Ctrl-C to terminate.');
 });

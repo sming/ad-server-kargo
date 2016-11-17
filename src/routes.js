@@ -1,4 +1,5 @@
 import express from 'express';
+import * as Dao from './dao';
 
 const router = express.Router();
 // Arrow functions

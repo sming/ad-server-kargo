@@ -9,7 +9,7 @@ let store;
 describe('App State', () => {
   describe('Dog', () => {
     beforeEach(() => {
-      store = {name:'Collie'};
+      store = {name :'Collie'};
     });
     describe('makeBark', () => {
       it('DESCRIPTION', () => {
