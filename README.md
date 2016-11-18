@@ -1,3 +1,11 @@
+## HOW TO RUN THE SOLUTION
+- Set up an ES6 & Node.js environment (I used https://github.com/verekia/js-stack-from-scratch)
+- `yarn start` # this builds everything and starts node amongst other things
+- in a different shell:
+- `curl -X POST 'localhost:3000/adcreative?creative=fred&brandId=2'` # create an ad
+- `curl -X GET 'localhost:3000/adcreative'` # get all ads
+- `curl -X POST 'localhost:3000/adcreative/serveAd?date=2016-10-12&format=TOP_BANNER'` # serve the next 'eligible' ad
+
 ## PROBLEM DEFINITION
 This is a solution to the following interview exercise [excerpt]:
 
