@@ -1,3 +1,5 @@
+/* eslint no-unused-vars: "off" */
+
 // TODO expose various util error handling functions for routes to call
 export default function (app) {
   // custom 500 page
