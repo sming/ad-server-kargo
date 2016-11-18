@@ -24,9 +24,13 @@ DROP TABLE IF EXISTS `ad`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `ad` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
-  `creative` text COLLATE utf8_unicode_ci NOT NULL COMMENT 'went for TEXT since don''t know length of ads',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  `creative` text NOT NULL COMMENT 'went for TEXT since don''t know length of ads',
+  `ad_brand_id` int(10) DEFAULT NULL,
+  `last_served` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `FK_A2AB_ID` (`ad_brand_id`),
+  CONSTRAINT `FK_A2AB_ID` FOREIGN KEY (`ad_brand_id`) REFERENCES `ad_brand` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -35,6 +39,7 @@ CREATE TABLE `ad` (
 
 LOCK TABLES `ad` WRITE;
 /*!40000 ALTER TABLE `ad` DISABLE KEYS */;
+INSERT INTO `ad` VALUES (1,'<div class=\"ellip ads-creative\">Official News, Deals and Savings from America\'s #1 <b>Charging</b> Brand</div>',1,'2016-11-18 02:01:58'),(2,'<div class=\"_Lqc\">IQ technology that detects device\'s unique <em>charging</em> protocols. It comes with a <em>charging</em> capacity of 25600 m - Ah and charges multiple USB-based ...</div>',2,'2016-11-18 02:02:04'),(3,'<div class=\"_Lqc\">Enough power to keep you going for days. Charge an iPhone 6 seven times, a Galaxy S6 five times or an iPad mini twice. Exclusive to <em>Anker</em>, PowerIQ ...</div>',3,'2016-11-18 02:02:11'),(4,'<div class=\"_Lqc\">Product Details The <em>Anker</em> Advantage: Join the 10 million+ powered by America\'s #1 USB <em>charging</em> brand.Fast <em>Charging</em> Technology: PowerIQ detects ...</div>',4,'2016-11-18 02:02:21'),(5,'<div class=\"ellip ads-creative\">Official News, Deals and Savings from America\'s #1 <b>Charging</b> Brand</div>',5,'2016-11-18 02:02:26'),(9,'fred',1,'2016-11-18 02:02:30'),(10,'fred',1,'2016-11-18 02:37:51'),(11,'fred',2,'2016-11-18 02:37:58');
 /*!40000 ALTER TABLE `ad` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -47,9 +52,10 @@ DROP TABLE IF EXISTS `ad_brand`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `ad_brand` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
-  `name` varchar(256) COLLATE utf8_unicode_ci NOT NULL,
+  `name` varchar(256) NOT NULL,
+  `last_served` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -58,6 +64,7 @@ CREATE TABLE `ad_brand` (
 
 LOCK TABLES `ad_brand` WRITE;
 /*!40000 ALTER TABLE `ad_brand` DISABLE KEYS */;
+INSERT INTO `ad_brand` VALUES (1,'Gillette','2016-11-17 22:34:44'),(2,'Microsoft','2016-11-17 22:34:50'),(3,'Apple','2016-11-17 22:34:56'),(4,'McDonalds','2016-11-17 22:35:01'),(5,'AT&T','2016-11-17 22:35:06');
 /*!40000 ALTER TABLE `ad_brand` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -70,17 +77,21 @@ DROP TABLE IF EXISTS `ad_campaign`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `ad_campaign` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
-  `name` varchar(256) COLLATE utf8_unicode_ci DEFAULT 'Campaign',
-  `ad_format` enum('BOTTOM_BANNER','HOVER','INTERSTITIAL','SITE_SKIN','TOP_BANNER') COLLATE utf8_unicode_ci NOT NULL,
-  `num_impressions` int(10) NOT NULL DEFAULT '0',
+  `name` varchar(256) DEFAULT 'Campaign',
+  `ad_format` enum('BOTTOM_BANNER','HOVER','INTERSTITIAL','SITE_SKIN','TOP_BANNER') NOT NULL,
+  `allotted_impressions` int(10) NOT NULL DEFAULT '0',
   `start_date` date NOT NULL,
   `end_date` date NOT NULL,
   `impressions_shown` int(10) NOT NULL DEFAULT '0',
   `ad_server_id` int(10) NOT NULL,
+  `ad_brand_id` int(10) DEFAULT NULL,
+  `last_served` datetime NOT NULL,
   PRIMARY KEY (`id`),
   KEY `FK_ac2as_id` (`ad_server_id`),
+  KEY `FK_AC2AB_ID` (`ad_brand_id`),
+  CONSTRAINT `FK_AC2AB_ID` FOREIGN KEY (`ad_brand_id`) REFERENCES `ad_brand` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `FK_ac2as_id` FOREIGN KEY (`ad_server_id`) REFERENCES `ad_server` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='encapsulates an ad campaign “flight” i.e. bounded by date range';
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COMMENT='encapsulates an ad campaign “flight” i.e. bounded by date range';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -89,8 +100,34 @@ CREATE TABLE `ad_campaign` (
 
 LOCK TABLES `ad_campaign` WRITE;
 /*!40000 ALTER TABLE `ad_campaign` DISABLE KEYS */;
-INSERT INTO `ad_campaign` VALUES (1,'Gillette','TOP_BANNER',300,'2016-09-01','2016-11-01',0,1),(2,'McDonalds','TOP_BANNER',500,'2016-10-01','2016-11-01',0,1),(3,'Microsoft','TOP_BANNER',200,'2016-09-15','2016-10-15',0,1),(4,'Apple','INTERSTITIAL',500,'2016-09-01','2016-09-30',0,1),(5,'AT&T','HOVER',250,'2016-10-01','2016-12-30',0,1);
+INSERT INTO `ad_campaign` VALUES (1,'Gillette','TOP_BANNER',300,'2016-09-01','2016-11-01',10,1,1,'2016-11-17 22:16:53'),(2,'McDonalds','TOP_BANNER',500,'2016-10-01','2016-11-01',25,1,4,'2016-11-17 22:18:55'),(3,'Microsoft','TOP_BANNER',200,'2016-09-15','2016-10-15',70,1,2,'2016-11-17 20:11:41'),(4,'Apple','INTERSTITIAL',500,'2016-09-01','2016-09-30',3,1,3,'2016-11-17 20:11:44'),(5,'AT&T','HOVER',250,'2016-10-01','2016-12-30',90,1,5,'2016-11-17 20:11:48');
 /*!40000 ALTER TABLE `ad_campaign` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `ad_serve_request`
+--
+
+DROP TABLE IF EXISTS `ad_serve_request`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `ad_serve_request` (
+  `id` int(10) NOT NULL AUTO_INCREMENT,
+  `request_timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `request_date` date NOT NULL,
+  `request_format` enum('BOTTOM_BANNER','HOVER','INTERSTITIAL','SITE_SKIN','TOP_BANNER') NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `ad_serve_request`
+--
+
+LOCK TABLES `ad_serve_request` WRITE;
+/*!40000 ALTER TABLE `ad_serve_request` DISABLE KEYS */;
+INSERT INTO `ad_serve_request` VALUES (1,'2016-11-18 02:43:19','2016-10-12','TOP_BANNER'),(2,'2016-11-18 02:56:55','2016-10-12','TOP_BANNER'),(3,'2016-11-18 02:57:50','2016-10-12','TOP_BANNER'),(4,'2016-11-18 02:59:23','2016-10-12','TOP_BANNER'),(5,'2016-11-18 03:02:03','2016-10-12','TOP_BANNER'),(6,'2016-11-18 03:02:18','2016-10-12','TOP_BANNER'),(7,'2016-11-18 03:02:30','2016-10-12','TOP_BANNER'),(8,'2016-11-18 03:04:29','2016-10-12','TOP_BANNER'),(9,'2016-11-18 03:08:10','2016-10-12','TOP_BANNER'),(10,'2016-11-18 03:08:46','2016-12-10','TOP_BANNER'),(11,'2016-11-18 03:08:48','2016-10-12','TOP_BANNER'),(12,'2016-11-18 03:09:48','2016-10-12','TOP_BANNER'),(13,'2016-11-18 03:10:23','2016-10-12','TOP_BANNER'),(14,'2016-11-18 03:10:55','2016-10-12','TOP_BANNER'),(15,'2016-11-18 03:13:02','2016-10-12','TOP_BANNER'),(16,'2016-11-18 03:13:52','2016-10-12','TOP_BANNER'),(17,'2016-11-18 03:15:20','2016-10-12','TOP_BANNER'),(18,'2016-11-18 03:16:23','2016-10-12','TOP_BANNER'),(19,'2016-11-18 03:16:53','2016-10-12','TOP_BANNER'),(20,'2016-11-18 03:18:55','2016-10-12','TOP_BANNER');
+/*!40000 ALTER TABLE `ad_serve_request` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -102,10 +139,10 @@ DROP TABLE IF EXISTS `ad_server`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `ad_server` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
-  `name` varchar(256) COLLATE utf8_unicode_ci DEFAULT 'Ad Server',
-  `serving_strategy` enum('ATTEMPT_EVEN','ROUND_ROBIN_INDIVIDUAL_REQUEST','ROUND_ROBIN_BRAND') COLLATE utf8_unicode_ci DEFAULT 'ATTEMPT_EVEN',
+  `name` varchar(256) DEFAULT 'Ad Server',
+  `serving_strategy` enum('ATTEMPT_EVEN','ROUND_ROBIN_INDIVIDUAL_REQUEST','ROUND_ROBIN_BRAND') DEFAULT 'ATTEMPT_EVEN',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci COMMENT='represents the strategy & settings of the ad server';
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COMMENT='represents the strategy & settings of the ad server';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -127,4 +164,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-11-17  0:13:18
+-- Dump completed on 2016-11-17 22:22:23
