@@ -20,5 +20,7 @@ Ad servers can vary in complexity and supported features. For the purposes of th
 ##TODO
 - unit tests
 - "Closing Question and Task"
-- refactor out a lot of common DAO code
+- refactor out a lot of common DAO code e.g. insertion code for different tables is similar
 - increment ad_campaign.impressions_shown
+- add missing FK's
+- add indexes on join columns and queried columns (in general)
