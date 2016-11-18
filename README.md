@@ -32,3 +32,4 @@ Ad servers can vary in complexity and supported features. For the purposes of th
 - increment ad_campaign.impressions_shown
 - add missing FK's
 - add indexes on join columns and queried columns (in general)
+- support passing data in the POST body
