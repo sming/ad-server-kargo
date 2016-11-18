@@ -20,10 +20,13 @@ Ad servers can vary in complexity and supported features. For the purposes of th
 ...
 
 ## HIGH-LEVEL AD-SERVING DESIGN
-- ONLY use the DB as a store, do not cache anything. This means we can run multiple node instances safely*. * safely-ish.
 - whenever an ad is shown, ad_campaign.last_served is updated. This drives the Round Robin serving strategy.
 - no queue is maintained as such. The query in Dao.getLongestSinceServedEligibleCampaign() basically consistently returns the least-recently-served campaign that's eligible at that time. This avoids keeping and maintaining a queue completely.
+
+## HIGH-LEVEL TECHNICAL DESIGN
+- ONLY use the DB as a store, do not cache anything. This means we can run multiple node instances safely*. * safely-ish.
 - there would be multiple-update issues with multiple node's running but barring incredibly heavy traffic, Round Robin order would still be maintained (IIRC microsecond granularity is an outstanding TODO for MySQL).
+- logging is to console because it's easy, fast and flexible. The stdout can then be captured by any number of log file frameworks which in then would be consumed by Splunk or Sumologic, to name two.
 
 ##TODO
 - unit tests
